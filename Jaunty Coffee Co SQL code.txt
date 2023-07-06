@@ -1,0 +1,44 @@
+Part B
+
+
+CREATE DATABASE JauntyCoffeeCo;
+
+
+--creating table for coffee shop
+CREATE TABLE coffee_shop ( shop_id int, shop_name varchar(50), city varchar(50), state char(2), 
+PRIMARY KEY (shop_id)); INSERT INTO coffee_shop ( shop_id, shop_name, city, state) VALUES (33, 'Jaunty Java', 
+'Boston', 'MA'), (17, 'Jaunty Java', 'Flagstaff', 'AZ'), (48, 'Jaunty Cafe and Drinks', 'Houston', 'TX');
+
+--creating supplier table
+CREATE TABLE supplier ( supplier_id int,company_name varchar(50),country varchar(30),
+sales_contact_name varchar(60), email varchar(50) NOT NULL, PRIMARY KEY (supplier_id)); 
+INSERT INTO supplier ( supplier_id, company_name, country, sales_contact_name, email) VALUES (5, 'Rocky Roasters',
+'USA', 'Amy Henderson', 'amyhenderson@rockyroastersco.com'), (12, 'Sunrise Supply', 'Brazil', 'Jean-Luc Machado',
+'jlmachado@ssbrazil.com'), (3, 'Paz y Luz Suministros', 'Colombia', 'Oscar Flor', 'oscar_flor@pazluzcosum.com');                                                                                              
+
+--creating table for employee
+CREATE TABLE employee ( employee_id int,first_name varchar(30),last_name varchar(30),hire_date date,
+job_title varchar(30),shop_id int,PRIMARY KEY (employee_id), FOREIGN KEY (shop_id) REFERENCES coffee_shop(shop_id)
+); INSERT INTO employee (employee_id, first_name, last_name, hire_date, job_title, shop_id) VALUES (4, 'Han',
+'Solo', '2018-05-25', 'Barista', 17), (10, 'Anita','Mocha', '2014-02-12', 'Barista', 33), (9, 'Cole','Brew',
+'2019-03-23', 'Operations Manager', 48);                                                                                                 
+
+
+--creating the table for coffee
+CREATE TABLE coffee ( coffee_id int,shop_id int,supplier_id int,coffee_name varchar(30),
+price_per_pound numeric(5,2),PRIMARY KEY (coffee_id),FOREIGN KEY (shop_id) REFERENCES coffee_shop(shop_id),
+FOREIGN KEY (supplier_id) REFERENCES supplier(supplier_id)); INSERT INTO coffee (coffee_id, shop_id, supplier_id,
+coffee_name, price_per_pound) VALUES (8, 33, 3, 'Happy Hazelnut', 34.77), (13, 17, 12, 'Rainforest Finest', 49.22), 
+(6, 48, 5, 'Mountain Choco Blend', 25.34);
+
+--creating a view
+CREATE VIEW Employees
+AS SELECT employee_id, CONCAT_WS(" ", first_name, last_name) AS employee_full_name, hire_date, 
+job_title, shop_id FROM employee;
+
+--creating the index
+CREATE INDEX coffee_index
+ON coffee (coffee_name);
+
+
+--The code was tested on SQL Fiddle in its entirety.
